@@ -2,7 +2,9 @@ import datetime
 import math
 import cv2
 import numpy as np
-
+import argparse
+import imutils
+import cv2
 # variaveis globais
 width = 0
 height = 0
@@ -35,7 +37,7 @@ def TestaInterseccaoSaida(y, CoordenadaYLinhaEntrada, CoordenadaYLinhaSaida):
         return 0
 
 
-camera = cv2.VideoCapture(10)
+camera = cv2.VideoCapture(0)
 
 
 # forca a camera a ter resolucao 640x480
@@ -125,7 +127,7 @@ while True:
             cv2.imshow("Frame com subtracao de background", FrameDelta)
             cv2.waitKey(1);
 
-    print
+
     "Contornos encontrados: " + str(QtdeContornos)
 
     # Escreve na imagem o numero de pessoas que entraram ou sairam da area vigiada

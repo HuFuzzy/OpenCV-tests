@@ -90,9 +90,10 @@ while True:
                 # draw the circle and centroid on the frame,
                 # then update the list of tracked points
                 cv2.circle(frame, (int(x), int(y)), int(radius), colors[key], 2)
-                cv2.putText(frame, key + " ball", (int(x - radius), int(y - radius)), cv2.FONT_HERSHEY_SIMPLEX, 0.6,
-                            colors[key], 2)
 
+                cv2.putText(frame, key + "Pontuou", (int(x - radius), int(y - radius)), cv2.FONT_HERSHEY_SIMPLEX, 0.6,
+                        colors[key], 2)
+                print(key + "Pontuou")
     # show the frame to our screen
     cv2.imshow("Frame", frame)
 
