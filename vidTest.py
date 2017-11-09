@@ -6,7 +6,7 @@ face_cascade = cv2.CascadeClassifier('xml/haarcascade_frontalface_default.xml')
 
 eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
 
-cap = cv2.VideoCapture('vid/sub.avi')
+cap = cv2.VideoCapture(0)
 
 while(cap.isOpened()):
     ret, img = cap.read()
