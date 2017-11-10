@@ -39,9 +39,12 @@ if not args.get("video", False):
 else:
     camera = cv2.VideoCapture(args["video"])
 # keep looping
+
+ptsVermelho =0
 while True:
     # grab the current frame
     (grabbed, frame) = camera.read()
+
     # if we are viewing a video and we did not grab a frame,
     # then we have reached the end of the video
     if args.get("video") and not grabbed:
@@ -59,13 +62,19 @@ while True:
 
     blurred = cv2.GaussianBlur(frame, (11, 11), 0)
     hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
+
+
     # for each color in dictionary check object in frame
     for key, value in upper.items():
         # construct a mask for the color from dictionary`1, then perform
         # a series of dilations and erosions to remove any small
         # blobs left in the mask
+
         kernel = np.ones((9, 9), np.uint8)
-        mask = cv2.inRange(hsv, lower[key], upper[key])
+
+        mask = cv2.inRange(hsv, lower[key], upper[key]) #Aqui aplica uma mascara ignorando os pixeis que não estiverem entre
+                                                        #Lower e upper
+
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
         mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
 
@@ -85,17 +94,29 @@ while True:
             M = cv2.moments(c)
             center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
 
-            # only proceed if the radius meets a minimum size. Correct this value for your obect's size
-            if radius > 0.5:
+
+            if radius > 0.5: # se o raio do objeto é 0.5 marca e pontua
+
                 # draw the circle and centroid on the frame,
                 # then update the list of tracked points
-                cv2.circle(frame, (int(x), int(y)), int(radius), colors[key], 2)
+                if key == "Vermelho":
+                    ptsVermelho =+ 1
 
+                cv2.circle(frame, (int(x), int(y)), int(radius), colors[key], 2)
                 cv2.putText(frame, key + "Pontuou", (int(x - radius), int(y - radius)), cv2.FONT_HERSHEY_SIMPLEX, 0.6,
                         colors[key], 2)
+
                 print(key + "Pontuou")
+                ##################################################
+                #                                                #
+                # Forma de contar pontos, Se uma cor apareceu    #
+                # só sera contada novamente depois de X frames   #
+                #                                                #
+                ##################################################
+
     # show the frame to our screen
     cv2.imshow("Frame", frame)
+
 
     key = cv2.waitKey(1) & 0xFF
     # if the 'q' key is pressed, stop the loop
