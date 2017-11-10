@@ -18,14 +18,13 @@ ap.add_argument("-b", "--buffer", type=int, default=64,
 args = vars(ap.parse_args())
 
 # define the lower and upper boundaries of the colors in the HSV color space
-lower = {'VERMELHO': (166, 84, 141), 'Verde': (66, 122, 129), 'AZUL': (97, 100, 117), 'AMARELO': (23, 59, 119),
-         'LARANJA': (0, 50, 80)}  # assign new item lower['blue'] = (93, 10, 0)
-upper = {'VERMELHO': (186, 255, 255), 'Verde': (86, 255, 255), 'AZUL': (117, 255, 255), 'AMARELO': (54, 255, 255),
-         'LARANJA': (20, 255, 255)}
+lower = {'VERMELHO': (166, 84, 141), 'VERDE': (66, 122, 129), 'AZUL': (97, 100, 117), 'AMARELO': (23, 59, 119)
+         }  # assign new item lower['blue'] = (93, 10, 0)
+upper = {'VERMELHO': (186, 255, 255), 'VERDE': (86, 255, 255), 'AZUL': (117, 255, 255), 'AMARELO': (54, 255, 255)}
 
 # define standard colors for circle around the object
-colors = {'red': (0, 0, 255), 'green': (0, 255, 0), 'blue': (255, 0, 0), 'yellow': (0, 255, 217),
-          'orange': (0, 140, 255)}
+colors = {'VERMELHO': (0, 0, 255), 'VERDE': (0, 255, 0), 'AZUL': (255, 0, 0), 'AMARELO': (0, 255, 217),
+          'LARANJA': (0, 140, 255)}
 
 # pts = deque(maxlen=args["buffer"])
 
@@ -41,6 +40,10 @@ else:
 # keep looping
 
 frameVermelho = 0
+frameAmarelo =  0
+frameVerde = 0
+frameLaranja = 0
+frameAzul = 0
 while True:
     # grab the current frame
     (grabbed, frame) = camera.read()
@@ -58,7 +61,7 @@ while True:
 
     # resize the frame, blur it, and convert it to the HSV
     # color space
-    frame = imutils.resize(frame, width=600)
+    frame = imutils.resize(frame, width=800)
 
     blurred = cv2.GaussianBlur(frame, (11, 11), 0)
     hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
@@ -95,30 +98,43 @@ while True:
             center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
 
 
-            if radius > 0.5: # se o raio do objeto é 0.5 marca e pontua
+            if radius > 50: # se o raio do objeto é 0.5 marca e pontua
 
                 # draw the circle and centroid on the frame,
                 # then update the list of tracked points
-                if key == "Vermelho":
-                    if (frameVermelho / qtdframe) > 2:
+                if key == "VERMELHO":
+                    if (qtdframe - frameVermelho) > 300:
                         print(key + "Pontuou")
+                        frameVermelho = qtdframe
 
+                if key == "AMARELO":
+                    if (qtdframe - frameAmarelo) > 300:
+                        print(key + "Pontuou")
+                        frameAmarelo = qtdframe
+
+                if key == "VERDE":
+                    if (qtdframe - frameVerde) > 300:
+                        print(key + "Pontuou")
+                        frameVerde = qtdframe
+
+                if key == "AZUL":
+                    if (qtdframe - frameAzul) > 300:
+                        print(key + "Pontuou")
+                        frameAzul = qtdframe
+
+                #if key == "LARANJA":
+                 #   if (qtdframe - frameLaranja) > 300:
+                  #      print(key + "Pontuou")
+                   #     frameLaranja = qtdframe
 
 
                 cv2.circle(frame, (int(x), int(y)), int(radius), colors[key], 2)
                 cv2.putText(frame, key + "Pontuou", (int(x - radius), int(y - radius)), cv2.FONT_HERSHEY_SIMPLEX, 0.6,
                         colors[key], 2)
 
-                print(key + "Pontuou")
-                ##################################################
-                #                                                #
-                # Forma de contar pontos, Se uma cor apareceu    #
-                # só sera contada novamente depois de X frames   #
-                #                                                #
-                ##################################################
 
     # show the frame to our screen
-    qtdframe = + 1
+    qtdframe += 1
     cv2.imshow("Frame", frame)
 
 
