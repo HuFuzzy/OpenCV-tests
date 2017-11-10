@@ -8,7 +8,7 @@ import argparse
 import imutils
 import cv2
 import urllib  # for reading image from URL
-
+qtdframe = 0
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-v", "--video",
@@ -40,7 +40,7 @@ else:
     camera = cv2.VideoCapture(args["video"])
 # keep looping
 
-ptsVermelho =0
+frameVermelho = 0
 while True:
     # grab the current frame
     (grabbed, frame) = camera.read()
@@ -100,7 +100,10 @@ while True:
                 # draw the circle and centroid on the frame,
                 # then update the list of tracked points
                 if key == "Vermelho":
-                    ptsVermelho =+ 1
+                    if (frameVermelho / qtdframe) > 2:
+                        print(key + "Pontuou")
+
+
 
                 cv2.circle(frame, (int(x), int(y)), int(radius), colors[key], 2)
                 cv2.putText(frame, key + "Pontuou", (int(x - radius), int(y - radius)), cv2.FONT_HERSHEY_SIMPLEX, 0.6,
@@ -115,6 +118,7 @@ while True:
                 ##################################################
 
     # show the frame to our screen
+    qtdframe = + 1
     cv2.imshow("Frame", frame)
 
 

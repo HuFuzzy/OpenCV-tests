@@ -1,9 +1,7 @@
 import datetime
-import math
-import cv2
 import numpy as np
 import argparse
-import imutils
+
 import cv2
 # variaveis globais
 width = 0
