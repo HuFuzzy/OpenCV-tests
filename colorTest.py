@@ -44,6 +44,14 @@ frameAmarelo =  0
 frameVerde = 0
 frameLaranja = 0
 frameAzul = 0
+
+voltasVermelho = 0
+voltasAmarelo =  0
+voltasVerde = 0
+voltasLaranja = 0
+voltasAzul = 0
+
+
 while True:
     # grab the current frame
     (grabbed, frame) = camera.read()
@@ -61,7 +69,7 @@ while True:
 
     # resize the frame, blur it, and convert it to the HSV
     # color space
-    frame = imutils.resize(frame, width=800)
+    frame = imutils.resize(frame, width=1080)
 
     blurred = cv2.GaussianBlur(frame, (11, 11), 0)
     hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
@@ -106,21 +114,25 @@ while True:
                     if (qtdframe - frameVermelho) > 300:
                         print(key + "Pontuou")
                         frameVermelho = qtdframe
+                        voltasVermelho += 1
 
                 if key == "AMARELO":
                     if (qtdframe - frameAmarelo) > 300:
                         print(key + "Pontuou")
                         frameAmarelo = qtdframe
+                        voltasAmarelo += 1
 
                 if key == "VERDE":
                     if (qtdframe - frameVerde) > 300:
                         print(key + "Pontuou")
                         frameVerde = qtdframe
+                        voltasVerde += 1
 
                 if key == "AZUL":
                     if (qtdframe - frameAzul) > 300:
                         print(key + "Pontuou")
                         frameAzul = qtdframe
+                        voltasAzul += 1
 
                 #if key == "LARANJA":
                  #   if (qtdframe - frameLaranja) > 300:
@@ -129,12 +141,18 @@ while True:
 
 
                 cv2.circle(frame, (int(x), int(y)), int(radius), colors[key], 2)
-                cv2.putText(frame, key + "Pontuou", (int(x - radius), int(y - radius)), cv2.FONT_HERSHEY_SIMPLEX, 0.6,
-                        colors[key], 2)
+                cv2.putText(frame,  "Pontuou", (int(x - radius), int(y - radius)), cv2.FONT_HERSHEY_SIMPLEX, 0.6, colors[key], 2)
+
+
 
 
     # show the frame to our screen
     qtdframe += 1
+    cv2.putText(frame, "Voltas Vermelho: " + str(voltasVermelho) , (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.8 ,colors["VERMELHO"], 4)
+    cv2.putText(frame, "Voltas Amarelho: " + str(voltasAmarelo), (20, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.8, colors["AMARELO"], 4)
+    cv2.putText(frame, "Voltas Verde: "+ str(voltasVerde), (20, 110), cv2.FONT_HERSHEY_SIMPLEX, 0.8, colors["VERDE"], 4)
+    cv2.putText(frame, "Voltas Azul: "+ str(voltasAzul), (20, 135), cv2.FONT_HERSHEY_SIMPLEX, 0.8, colors["AZUL"], 4)
+
     cv2.imshow("Frame", frame)
 
 
