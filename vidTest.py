@@ -6,7 +6,8 @@ face_cascade = cv2.CascadeClassifier('xml/haarcascade_frontalface_default.xml')
 
 eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture("https://camerite.com/67bb3416-bd0e-48f0-a12c-f89dafa79d95")
+
 
 while(cap.isOpened()):
     ret, img = cap.read()
