@@ -18,7 +18,7 @@ def salvar(Hlo, HUp, Slo, Sup, Vlo, Vup):
 
 
 cv2.namedWindow('Calibrador')
-cap = cv2.VideoCapture('vid/sub.avi')
+cap = cv2.VideoCapture(1)
 
 cv2.createTrackbar('Hlo','Calibrador',0,255,nothing)
 cv2.createTrackbar('HUp','Calibrador',0,255,nothing)
@@ -29,7 +29,7 @@ cv2.createTrackbar('Vup','Calibrador',0,255,nothing)
 
 
 while True:
-    #root = Tk()
+
     _, frame = cap.read()
     frame = imutils.resize(frame, width=300)
 
@@ -54,17 +54,19 @@ while True:
     mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
     mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
 
-    salvar(Hlo, HUp, Slo, Sup, Vlo, Vup)
+    if cv2.waitKey(33) == ord('s'):
+        salvar(Hlo, HUp, Slo, Sup, Vlo, Vup)
+
+
 
     #btn = Button(root, text="Salvar Config", command= lambda: salvar(Hlo,HUp,Slo,Sup,Vlo,Vup)).pack()
-
 
     #res2 = cv2.cvtColor(res,cv2.COLOR_BAYER_BG2GRAY)
     #res2 = cv2.medianBlur(res2, 15)
 
-    #cv2.imshow('frame', frame)
+    cv2.imshow('frame', frame)
     cv2.imshow('mask', mask)
-    #cv2.imshow('res', res)
+    cv2.imshow('res', res)
 
 
 
@@ -72,6 +74,8 @@ while True:
     k = cv2.waitKey(100) & 0xFF
     if cv2.waitKey(33) == ord('a'):
         break
-    #root.mainloop()
+
+
+
+
 cv2.destroyAllWindows()
-#root.destroy()
