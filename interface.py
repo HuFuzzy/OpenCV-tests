@@ -46,7 +46,7 @@ maskL = tk.Label(maskFrame)
 maskL.grid(row=0, column=1)
 
 #captura a camera
-cap = cv2.VideoCapture('vid/bg.avi')
+cap = cv2.VideoCapture(1)
 
 #SLIDES
 Hlo =tk.Scale(orient='horizontal', from_=1, to=255,)
@@ -91,6 +91,9 @@ def show_frame():
 
     mask = cv2.inRange(frame, lower_cor, upper_cor)
 
+    b, g, r = cv2.split(frame)
+    frame = cv2.merge((r, g, b))
+
     kernel = np.ones((9, 9), np.uint8)
     mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
     mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
@@ -104,7 +107,7 @@ def show_frame():
 
     lmain.imgtk = imgtk
     lmain.configure(image=imgtk)
-
+    cv2.imshow('frame', frame)
 
     maskL.imgtk = masktk
     maskL.configure(image=masktk)
