@@ -8,6 +8,18 @@ import argparse
 import imutils
 import cv2
 import urllib  # for reading image from URL
+import pyodbc
+
+############################# B A N C O ###########
+server = 'localhost\sqlexpress'
+database = 'teste'
+username = 'sa'
+password = 'nimp2017'
+cnxn = pyodbc.connect('DRIVER={ODBC Driver 13 for SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
+cursor = cnxn.cursor()
+##############################
+
+
 qtdframe = 0
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -31,7 +43,7 @@ colors = {'VERMELHO': (0, 0, 255), 'VERDE': (0, 255, 0), 'AZUL': (255, 0, 0), 'A
 # if a video path was not supplied, grab the reference
 # to the webcam
 if not args.get("video", False):
-    camera = cv2.VideoCapture(0)
+    camera = cv2.VideoCapture('vid/teste1.jpg')
 
 
 # otherwise, grab a reference to the video file
@@ -111,25 +123,25 @@ while True:
                 # draw the circle and centroid on the frame,
                 # then update the list of tracked points
                 if key == "VERMELHO":
-                    if (qtdframe - frameVermelho) > 300:
+                    #if (qtdframe - frameVermelho) > 300:
                         print(key + "Pontuou")
                         frameVermelho = qtdframe
                         voltasVermelho += 1
 
                 if key == "AMARELO":
-                    if (qtdframe - frameAmarelo) > 300:
+                    #if (qtdframe - frameAmarelo) > 300:
                         print(key + "Pontuou")
                         frameAmarelo = qtdframe
                         voltasAmarelo += 1
 
                 if key == "VERDE":
-                    if (qtdframe - frameVerde) > 300:
+                    #if (qtdframe - frameVerde) > 300:
                         print(key + "Pontuou")
                         frameVerde = qtdframe
                         voltasVerde += 1
 
                 if key == "AZUL":
-                    if (qtdframe - frameAzul) > 300:
+                    #if (qtdframe - frameAzul) > 300:
                         print(key + "Pontuou")
                         frameAzul = qtdframe
                         voltasAzul += 1
@@ -142,6 +154,7 @@ while True:
 
                 cv2.circle(frame, (int(x), int(y)), int(radius), colors[key], 2)
                 cv2.putText(frame,  "Pontuou", (int(x - radius), int(y - radius)), cv2.FONT_HERSHEY_SIMPLEX, 0.6, colors[key], 2)
+                cursor.execute("INSERT INTO tabela(teste)VALUES ('ponto')")
 
 
 

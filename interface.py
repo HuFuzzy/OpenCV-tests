@@ -2,7 +2,12 @@ import numpy as np
 import cv2
 import tkinter as tk
 
+
 from PIL import ImageTk,Image
+
+
+
+
 
 def salvaConfig():
     if v.get()== '':
@@ -68,7 +73,7 @@ VUp =tk.Scale(orient='horizontal', from_=1, to=255)
 VUp.grid(row=610, column=0)
 
 #botao salvar
-button = tk.Button(window, text="Salvar", width=20,height = 3, command=salvaConfig)
+button = tk.Button(window, text="Salvar", width=20,height = 3, command=answer)
 button.grid(row=614, column=1, columnspan=3)
 
 
