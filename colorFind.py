@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-#PODE SER CONVERTIDO NESTE LINK http://wamingo.net/rgbbgr/
+
 print ("")
 
 
